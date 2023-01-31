@@ -114,3 +114,32 @@ p {
   margin: 0 auto;
   font-size: 20px;
 }
+
+/* Card */
+
+.card-container {
+  display: flex;
+}
+
+.card-slot {
+  margin: 10px;
+  max-width: 10%;
+  min-width: 90px;
+}
+.card-slot > img {
+  width: 100%;
+}
+
+.card-slot {
+  margin: 10px;
+  max-width: 10%;
+  min-width: 90px;
+}
+
+.card-slot > img {
+  width: 100%;
+}
+
+#card-hide {
+  content: url(../cards/card-back.svg);
+}
