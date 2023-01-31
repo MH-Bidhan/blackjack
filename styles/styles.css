@@ -12,7 +12,6 @@ html {
 
 body {
   background-color: #101010;
-  position: relative;
   overflow: hidden;
   height: 100vh;
   width: 100vw;
@@ -74,4 +73,44 @@ p {
   left: 50%;
   right: 50%;
   transform: translate(-50%, 0);
+}
+
+/* Base */
+
+.base-container {
+  position: relative;
+}
+
+.base {
+  width: 90%;
+  border: 5px solid #fff;
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, 0);
+  margin: 10px;
+}
+
+.base-computer {
+  min-height: 40%;
+}
+
+.base-player {
+  bottom: 20px;
+  min-height: 45%;
+  position: absolute;
+}
+
+.player-indicator {
+  font-size: 25px;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.score {
+  width: max-content;
+  margin: 0 auto;
+  font-size: 20px;
 }

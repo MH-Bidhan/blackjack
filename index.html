@@ -10,11 +10,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   </head>
   <body>
+    <!-- Lobby -->
     <div id="lobby">
       <div class="btn-modal">
         <div style="text-align: center">
           <p>Welcome to the world of cards</p>
           <button class="btn" id="btn-play">play</button>
+        </div>
+      </div>
+    </div>
+    <!-- Base -->
+    <div class="base-continer">
+      <div class="base base-computer">
+        <div class="player-indicator">Computer</div>
+        <div class="score">Points : <span id="point-computer">0</span></div>
+      </div>
+      <div class="base base-player">
+        <div class="player-indicator">Player</div>
+        <div class="score">Points : <span id="point-player">0</span></div>
+        <div class="btn-container">
+          <button class="btn" id="btn-hit">Hit</button>
+          <button class="btn" id="btn-stand">Stand</button>
         </div>
       </div>
     </div>
