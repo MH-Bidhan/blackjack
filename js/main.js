@@ -1,3 +1,4 @@
+import { renderPoints } from "../helper/render.js";
 import hitNewCard from "./../helper/hitNewCard.js";
 
 const dealtCards = {};
@@ -35,4 +36,23 @@ $(document).ready(function () {
 
   // Function for user to hit for a card
   $("#btn-hit").click(() => hitNewCard(user, dealtCards));
+
+  // Function for the computer to play if user stands
+  $("#btn-stand").click(() => {
+    computer.cards.forEach((card) =>
+      card.hide ? (computer.points += card.point) : null
+    );
+    renderPoints(computer);
+    $("#card-hide").removeAttr("id");
+
+    const computerDraw = setInterval(() => {
+      if (user.points > 18 && user.points > computer.points) {
+        hitNewCard(computer, dealtCards);
+      } else if (user.points <= 18 && user.points >= computer.points) {
+        hitNewCard(computer, dealtCards);
+      } else {
+        clearInterval(computerDraw);
+      }
+    }, 800);
+  });
 });
