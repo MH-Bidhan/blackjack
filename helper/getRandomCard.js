@@ -10,9 +10,7 @@ function getRandomCard(dealt = {}) {
 
   while (true) {
     if (dealt[randomIndex]) {
-      console.log("be", randomIndex);
       randomIndex = randomIndex * randomNumber1 + randomNumber2;
-      console.log("af", randomIndex);
     } else if (randomIndex > 51) {
       randomIndex /= 3;
     } else if (i > 100) {
