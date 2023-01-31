@@ -18,9 +18,12 @@ function generateCards() {
 
   const cards = [];
 
+  let i = 1;
+
   for (suit of suits) {
     for (key in map) {
-      cards.push({ svg: `${suit}_${key}.svg`, point: map[key] });
+      cards.push({ id: i, svg: `${suit}_${key}.svg`, point: map[key] });
+      i++;
     }
   }
 
