@@ -21,6 +21,9 @@ function resetGame(user, computer) {
 }
 
 function startNewGame(user, computer, dealtCards) {
+  // Hiding the action button to make the playing turns clear to the user
+  $(".btn-container").hide();
+
   if ((!user, !computer, !dealtCards)) return;
 
   let cardCount = 0;
@@ -30,6 +33,7 @@ function startNewGame(user, computer, dealtCards) {
 
   const dealCards = setInterval(() => {
     if (cardCount === 2) {
+      $(".btn-container").show();
       const computerPoint = getPlayerPoint(computer);
 
       if (user.points === 21) renderResult({ won: true, blackjack: true });
@@ -83,6 +87,8 @@ function hitNewCard(player, dealtCards, hide = false) {
 }
 
 function stand(user, computer, dealtCards) {
+  $(".btn-container").hide();
+
   if (user.cards.length < 2 || computer.cards.length < 2) return;
   const point = computer.cards.reduce((acc, curr) => acc + curr.point, 0);
   computer.points = point;
