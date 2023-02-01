@@ -88,19 +88,20 @@ p {
   padding: 10px;
   position: absolute;
   left: 50%;
-  right: 50%;
   transform: translate(-50%, 0);
-  margin: 10px;
+  margin: 10px auto;
 }
 
 .base-computer {
+  position: absolute;
+  top: 20px;
   min-height: 40%;
 }
 
 .base-player {
+  position: absolute;
   bottom: 20px;
   min-height: 45%;
-  position: absolute;
 }
 
 .player-indicator {
@@ -142,4 +143,48 @@ p {
 
 #card-hide {
   content: url(../cards/card-back.svg);
+}
+
+/* Result Board */
+
+#result-board {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 20;
+}
+
+.result-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 250px;
+  background-color: black;
+  border: 3px solid white;
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.result-content {
+  text-align: center;
+}
+
+#result,
+#blackjack {
+  margin: 20px auto;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#blackjack {
+  font-size: 40px;
+}
+
+#result {
+  font-size: 25px;
 }
