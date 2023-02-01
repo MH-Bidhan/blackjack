@@ -1,4 +1,5 @@
 import getRandomCard from "./getRandomCard.js";
+import { getPlayerPoint, resetPlayer } from "./player.js";
 import {
   renderNewCard,
   renderPoints,
@@ -9,13 +10,10 @@ import {
 const delay = 800;
 
 function resetGame(user, computer) {
-  user.cards = [];
-  user.points = 0;
-  computer.cards = [];
-  computer.points = 0;
+  resetPlayer(user);
+  resetPlayer(computer);
 
   $(`.card-container`).empty();
-
   $(`#point-computer`).text(0);
   $(`#point-player`).text(0);
 
@@ -24,16 +22,15 @@ function resetGame(user, computer) {
 
 function startNewGame(user, computer, dealtCards) {
   if ((!user, !computer, !dealtCards)) return;
+
   let cardCount = 0;
 
-  $("#result-board").hide();
   resetGame(user, computer);
+  $("#result-board").hide();
 
   const dealCards = setInterval(() => {
     if (cardCount === 2) {
-      const computerPoint = computer.cards.reduce((acc, curr) => {
-        return acc + curr.point;
-      }, 0);
+      const computerPoint = getPlayerPoint(computer);
 
       if (user.points === 21) renderResult({ won: true, blackjack: true });
 
@@ -41,7 +38,6 @@ function startNewGame(user, computer, dealtCards) {
         computer.points = 21;
 
         renderPoints(computer);
-
         renderResult({ won: false, blackjack: true });
       }
 
