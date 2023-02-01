@@ -24,20 +24,27 @@ function resetGame(user, computer) {
 
 function startNewGame(user, computer, dealtCards) {
   if ((!user, !computer, !dealtCards)) return;
+  let cardCount = 0;
 
   $("#result-board").hide();
   resetGame(user, computer);
 
   const dealCards = setInterval(() => {
-    if (user.cards.length === 2 && computer.cards.length === 2) {
+    if (cardCount === 2) {
+      const computerPoint = computer.cards.reduce((acc, curr) => {
+        return acc + curr.point;
+      }, 0);
+
       if (user.points === 21) renderResult({ won: true, blackjack: true });
 
-      if (
-        computer.cards.reduce((acc, curr) => {
-          return acc + curr.point;
-        }, 0) === 21
-      )
+      if (computerPoint === 21) {
+        computer.points = 21;
+
+        renderPoints(computer);
+
         renderResult({ won: false, blackjack: true });
+      }
+
       return clearInterval(dealCards);
     }
 
@@ -46,9 +53,10 @@ function startNewGame(user, computer, dealtCards) {
     }
 
     if (computer.cards.length < 2) {
-      const hidden = computer.cards.length === 1 ? true : false;
+      const hidden = cardCount === 1 ? true : false;
       hitNewCard(computer, dealtCards, hidden);
     }
+    cardCount++;
   }, delay);
 }
 
@@ -57,7 +65,7 @@ function hitNewCard(player, dealtCards, hide = false) {
 
   const newCard = getRandomCard(dealtCards);
 
-  if (hide) newCard.hide = true;
+  if (!newCard) return hitNewCard(player, dealtCards, hide);
 
   cards.push(newCard);
 
@@ -69,19 +77,20 @@ function hitNewCard(player, dealtCards, hide = false) {
     }
   }
 
-  if (!newCard.hide) {
+  if (!hide) {
     player.points = points + newCard.point;
   }
 
-  renderNewCard(name, newCard);
+  renderNewCard(name, newCard, hide);
 
   renderPoints(player);
 }
 
 function stand(user, computer, dealtCards) {
-  computer.cards.forEach((card) =>
-    card.hide ? (computer.points += card.point) : null
-  );
+  if (user.cards.length < 2 || computer.cards.length < 2) return;
+  const point = computer.cards.reduce((acc, curr) => acc + curr.point, 0);
+  computer.points = point;
+
   revealHiddenCard();
   renderPoints(computer);
 
@@ -90,13 +99,14 @@ function stand(user, computer, dealtCards) {
   }
 
   const computerDraw = setInterval(() => {
-    if (user.points > 18 && user.points > computer.points) {
+    if (user.points >= 18 && user.points > computer.points) {
       hitNewCard(computer, dealtCards);
-    } else if (user.points <= 18 && user.points >= computer.points) {
+    } else if (user.points < 18 && user.points >= computer.points) {
       hitNewCard(computer, dealtCards);
     } else {
       if (computer.points > 21) return clearInterval(computerDraw);
-      if (user.points === computer.points) return renderResult({ draw: true });
+
+      if (user.points === computer.points) renderResult({ draw: true });
 
       if (user.points > computer.points) renderResult({ won: true });
 
