@@ -1,7 +1,7 @@
-function renderNewCard(name, newCard) {
+function renderNewCard(name, newCard, hide = false) {
   return $(`#${name}-card-container`).append(
     `<div class="card-slot"  ${
-      newCard.hide === true ? 'id= "card-hide"' : ""
+      hide === true ? 'id= "card-hide"' : ""
     }><img src="cards/${newCard.svg}"  alt="" /></div>`
   );
 }
@@ -17,11 +17,14 @@ function revealHiddenCard() {
 }
 
 function renderResult({ won = false, draw = false, blackjack = false }) {
-  if (draw) return $(`#result`).text("Draw");
+  if (draw) {
+    $(`#result`).text("Draw").show();
+    return $("#result-board").show();
+  }
 
   if (blackjack) {
     revealHiddenCard();
-    $(`#blackjack`).text("Blcakjack");
+    $(`#blackjack`).text("Blcakjack").show();
   } else {
     $(`#blackjack`).hide();
   }
