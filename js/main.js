@@ -1,6 +1,6 @@
 import { hitNewCard, stand, startNewGame } from "../helper/blackjack.js";
 
-const dealtCards = {};
+let dealtCards = {};
 
 const user = {
   name: "player",
@@ -27,7 +27,10 @@ $(document).ready(function () {
     if (computer.cards.length >= 2 && user.cards.length >= 2)
       hitNewCard(user, dealtCards);
   });
-  $("#btn-new-game").click(() => startNewGame(user, computer, dealtCards));
+  $("#btn-new-game").click(() => {
+    dealtCards = {};
+    startNewGame(user, computer, dealtCards);
+  });
 
   // Function for the computer to play if user stands
   $("#btn-stand").click(() => stand(user, computer, dealtCards));
