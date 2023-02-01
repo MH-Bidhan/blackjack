@@ -160,7 +160,7 @@ p {
   align-items: center;
   width: 300px;
   height: 250px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.85);
   border: 3px solid white;
   border-radius: 10px;
   position: absolute;
