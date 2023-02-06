@@ -17,7 +17,6 @@ const computer = {
 $(document).ready(function () {
   // Function to close the lobby window and start a game when the play button is clicked.
   $("#btn-play").click(function () {
-    $("#lobby").remove();
     startNewGame(user, computer, dealtCards);
   });
 

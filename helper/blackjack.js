@@ -22,13 +22,14 @@ function resetGame(user, computer) {
 
 function startNewGame(user, computer, dealtCards) {
   // Hiding the action button to make the playing turns clear to the user
-  $(".btn-container").hide();
 
   if ((!user, !computer, !dealtCards)) return;
 
   let cardCount = 0;
 
   resetGame(user, computer);
+  $("#lobby").remove();
+  $(".btn-container").hide();
   $("#result-board").hide();
 
   const dealCards = setInterval(() => {
@@ -63,14 +64,35 @@ function startNewGame(user, computer, dealtCards) {
 function hitNewCard(player, dealtCards, hide = false) {
   const { name, cards, points } = player;
 
+  if (points >= 21) return;
+
   const newCard = getRandomCard(dealtCards);
 
   if (!newCard) return hitNewCard(player, dealtCards, hide);
 
   cards.push(newCard);
 
-  if (points + newCard.point > 21) {
-    if (name === "player") {
+  const conditions = {
+    namePlayer: name === "player",
+  };
+
+  let newPoints = getPlayerPoint(player);
+
+  // Changing the value of any Ace card to 1 if user draws past 21 point
+  if (newPoints > 21) {
+    if (newCard.point === 11) {
+      newCard.point = 1;
+    } else {
+      for (let card of cards) {
+        if (card.point === 11) card.point = 1;
+      }
+    }
+
+    newPoints = getPlayerPoint(player);
+  }
+
+  if (newPoints > 21) {
+    if (conditions.namePlayer) {
       renderResult({ won: false });
     } else {
       renderResult({ won: true });
@@ -81,9 +103,21 @@ function hitNewCard(player, dealtCards, hide = false) {
     player.points = points + newCard.point;
   }
 
+  if (conditions.namePlayer && newPoints === 21) {
+    // Declaring the player winner if the player gets 21 points in first draw.
+    if (player.cards.length === 3) {
+      renderResult({ won: true });
+    } else {
+      $(".btn-container").hide();
+      setTimeout(() => $("#btn-stand").click(), 1000);
+    }
+  }
+
   renderNewCard(name, newCard, hide);
 
   renderPoints(player);
+
+  return;
 }
 
 function stand(user, computer, dealtCards) {
