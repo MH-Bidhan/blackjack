@@ -28,6 +28,7 @@ function startNewGame(user, computer, dealtCards) {
   let cardCount = 0;
 
   resetGame(user, computer);
+
   $("#lobby").remove();
   $(".btn-container").hide();
   $("#result-board").hide();
@@ -35,11 +36,12 @@ function startNewGame(user, computer, dealtCards) {
   const dealCards = setInterval(() => {
     if (cardCount === 2) {
       $(".btn-container").show();
-      const computerPoint = getPlayerPoint(computer);
+      const userPoints = getPlayerPoint(user);
+      const computerPoints = getPlayerPoint(computer);
 
-      if (user.points === 21) renderResult({ won: true, blackjack: true });
+      if (userPoints === 21) renderResult({ won: true, blackjack: true });
 
-      if (computerPoint === 21) {
+      if (computerPoints === 21) {
         computer.points = 21;
 
         renderPoints(computer);
@@ -70,7 +72,7 @@ function hitNewCard(player, dealtCards, hide = false) {
 
   if (!newCard) return hitNewCard(player, dealtCards, hide);
 
-  cards.push(newCard);
+  player.cards.push(newCard);
 
   const conditions = {
     namePlayer: name === "player",
@@ -79,19 +81,23 @@ function hitNewCard(player, dealtCards, hide = false) {
   let newPoints = getPlayerPoint(player);
 
   // Changing the value of any Ace card to 1 if user draws past 21 point
-  if (newPoints > 21) {
+  if (points + newCard.point > 21) {
     if (newCard.point === 11) {
       newCard.point = 1;
-    } else {
+    } else if (newCard.point < 11) {
       for (let card of cards) {
-        if (card.point === 11) card.point = 1;
+        if (card.point === 11) {
+          card.point = 1;
+          player.points -= 10;
+          break;
+        }
       }
     }
 
     newPoints = getPlayerPoint(player);
   }
 
-  if (newPoints > 21) {
+  if (getPlayerPoint(player) > 21) {
     if (conditions.namePlayer) {
       renderResult({ won: false });
     } else {
@@ -100,10 +106,10 @@ function hitNewCard(player, dealtCards, hide = false) {
   }
 
   if (!hide) {
-    player.points = points + newCard.point;
+    player.points = player.points + newCard.point;
   }
 
-  if (conditions.namePlayer && newPoints === 21) {
+  if (conditions.namePlayer && newPoints === 21 && cards.length > 2) {
     // Declaring the player winner if the player gets 21 points in first draw.
     if (player.cards.length === 3) {
       renderResult({ won: true });
@@ -114,7 +120,6 @@ function hitNewCard(player, dealtCards, hide = false) {
   }
 
   renderNewCard(name, newCard, hide);
-
   renderPoints(player);
 
   return;
@@ -124,8 +129,7 @@ function stand(user, computer, dealtCards) {
   $(".btn-container").hide();
 
   if (user.cards.length < 2 || computer.cards.length < 2) return;
-  const point = computer.cards.reduce((acc, curr) => acc + curr.point, 0);
-  computer.points = point;
+  computer.points = getPlayerPoint(computer);
 
   revealHiddenCard();
   renderPoints(computer);

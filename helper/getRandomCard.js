@@ -17,7 +17,7 @@ function getRandomCard(dealt = {}) {
 
   while (true) {
     if (dealt[randomIndex]) {
-      randomIndex = randomNumber1 + randomNumber2 + getRandomNumber();
+      return getRandomCard(dealt);
     } else if (randomIndex > 51) {
       randomIndex /= 3;
     } else if (i > 100) {
